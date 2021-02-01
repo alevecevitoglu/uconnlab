@@ -1,0 +1,34 @@
+% plot spike raster...
+load('nsa2009_1.mat')
+
+x = input('Enter neuron number: ');
+for i=1:length(data(x).spks)
+spikeinfo = data(x).spks{1,i};
+
+trial_temp = zeros (1, length(spikeinfo));
+trial = trial_temp +i;
+
+scatter(spikeinfo, trial, 'b', 'filled');
+hold on
+end
+
+
+
+% calculate psth...total number of spikes accross trials
+load('nsa2009_1.mat')
+
+binsize = 5;
+maxTime = 2000;
+
+temp = zeros (1, 2000);
+
+x = input('Enter neuron number: ');
+for i=1:length(data(x).spks)
+    spikeinfo = data(x).spks{1,i};
+    for  j =1:length(spikeinfo) %#ok<ALIGN>
+        somenumber= spikeinfo(j);
+        temp(somenumber) = temp(somenumber)+1; 
+	end
+end
+
+bar(temp)

@@ -1,13 +1,10 @@
-
-
 %% 2.0 Load data...
 
 % either Axon Diameter vs Conduction Velocity
-data = readtable('Hursh1936.csv');
+%data = readtable('Hursh1936.csv');
 
 % or log-Body Weight vs log-Brain Weight
 data = readtable('BodyBrain.csv');
-
 data = table2array(data);
 
 %% 2.1 Bootstrap to estimate the mean and sem of the x-variable
@@ -15,28 +12,47 @@ data = table2array(data);
 nboot = 10000;
 xdata=data(:,1);
 ydata=data(:,2);
+
 bootstat = bootstrp(nboot,'mean',xdata);
+
+f1=figure;
 histogram(bootstat)
 
 %% 2.2 Plot the data
-plot(data(:,1),data(:,2), "o") %scatter plot
+f2 = figure;
+plot(xdata,ydata, "o") %scatter plot
 
 
 %% 2.3 Linear regression
+% linear regression (linear:1st degree!)
+% returns the coefficients for a polynomial p(x) of degree n that is a best fit
+b = polyfit(xdata,ydata,1); %x,y,n n is the degree
 
-% linear regression
-b = polyfit(xdata,ydata,1);
+%%make prediction line
+%The polyval function takes x values
+% and parameters as input and returns estimated y values.
+%polyval you can find standard errors for your predictions of y.
+prediction = polyval(b,xdata) %polyval(p,x) evaluates the polynomial p at each point in x. 
 
 
 %% 2.4 Plot the data and fit
-polyfit(data(:,1), data(:,... (in the code)
+f3 = figure;
+plot(xdata,ydata,'o',xdata,prediction)
+legend('data', 'linear fit')
+
 
 %% 2.5 Bootstrap to find error-bars for the model parameters
-
 nboot = 1000;
-[bootstat,bootsam] = bootstrp(nboot,'',???);
+%y = linspace(a,b,n) generates a row vector y of n points 
+%linearly spaced between and including a and b
+
+[bootstat,bootsam] = bootstrp(nboot,'mean',ydata); %neden ydata
+
+x = linspace(min(xdata), max(xdata),100); 
 for i=1:nboot
-    bboot(i,:) = polyfit(???); (bootsam!!!)
+    bboot(i,:) = polyfit(data(bootsam(:,1), 
+                            data(bootsam(:,i),2),1)
+    bpred(i,:) = polyval(bboot(1,:),x);
 end
 
 

@@ -79,7 +79,24 @@ end
 bpred = bpred(1,:)';
 plot(x,bpred,'k');
 
-%% check: http://www.mbfys.ru.nl/~robvdw/DGCN22/PRACTICUM_2011/LABS_2011/ALTERNATIVE_LABS/Lesson_6.html
+%%
+
+nboot = 1000;
+%y = linspace(a,b,n) generates a row vector y of n points 
+%linearly spaced between and including a and b
+ 
+[bootstat,bootsam] = bootstrp(nboot,'mean',ydata);
+ 
+x = linspace(min(xdata), max(xdata),100); 
+for i=1:nboot
+    bboot(i,:) = polyfit(data(bootsam(:,i),1), data(bootsam(:,i),2),2);
+    bpred(i,:) = polyval(bboot(i,:),x);
+end
+ 
+f4 = figure;
+plot(x,bpred,'--');
+hold off
+
 
 
 

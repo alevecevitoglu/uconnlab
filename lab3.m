@@ -43,7 +43,7 @@ options=[]; % for now just use default options (see help fminsearch for more)
 %fmin (function, start point, options)
 % VonMisesCost (b, x, y) 
 %bmse has the min error parameters
-b_mse = fminsearch('vonMisesCost',[1 0.1 pi], options, x_matrix(:),spike_counts(:)); % do the optimization
+b_mse = fminsearch('vonMisesCost',[1 0.1 pi], options, x_matrix(:),spike_counts(:)); %we need to select column vectors from the matrices
 
 %% 3.5 Plot your model fit with the data
 figure(4)
@@ -52,10 +52,11 @@ hold on
 %Deg = Rad * (180 / π)
 x_matrix_deg = x_matrix*(180/pi);
 
-%scatter copy paste:
-scatter(x_matrix_deg(:), spike_counts(:), 'bo') %as 3.4, we need to select rows for the matrices!
+%scatter
+scatter(x_matrix_deg(:), spike_counts(:), 'bo') 
 xlabel('Orientation [deg]'); ylabel('Spike Rate (counts)')
 
+%fit
 x0 = x*(180/pi);
 plot(x0,vonMises(b_mse,x0))
 hold off
